@@ -7,13 +7,17 @@ import {
 } from 'react-native';
 
 import Index from './pages/Index'
+import Header0 from './components/Header0'
+import headerStore from './mobx/headerStore'
 
 const INITIAL_ROUTE = {
+  title: '首页',
   component: Index
 }
 
 export default class App extends Component {
   renderScene = (route, navigator) => {
+    headerStore.setTitle(route.title)
     const Comp = route.component
     return (
       <Comp navigator={navigator} route={route} />
@@ -23,9 +27,7 @@ export default class App extends Component {
   render() {
     return (
       <View style={styles.root}>
-        {/* <Text style={styles.text}>
-          这是App.js
-        </Text> */}
+        <Header0 />
         <Navigator
           initialRoute={INITIAL_ROUTE}
           renderScene={this.renderScene}

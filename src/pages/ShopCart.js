@@ -8,14 +8,21 @@ import {
 import Header from '../components/Header'
 import ItemList from '../components/ItemList'
 import Footer from '../components/Footer'
+import headerStore from '../mobx/headerStore'
 
 export default class ShopCart extends Component {
-
+  constructor (props) {
+    super(props)
+  }
+  componentWillMount () {
+    headerStore.rightClick = () => {
+      console.log('购物车点击右键')
+    }
+  }
   render() {
     const { navigator } = this.props
     return (
       <View style={styles.root}>
-        <Header navigator={navigator}/>
         <Text style={styles.text}>
           购物车页面
         </Text>
