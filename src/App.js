@@ -23,9 +23,9 @@ export default class App extends Component {
   render() {
     return (
       <View style={styles.root}>
-        <Text style={styles.text}>
+        {/* <Text style={styles.text}>
           这是App.js
-        </Text>
+        </Text> */}
         <Navigator
           initialRoute={INITIAL_ROUTE}
           renderScene={this.renderScene}
@@ -38,11 +38,5 @@ export default class App extends Component {
 const styles = StyleSheet.create({
   root: {
     flex: 1,
-    paddingTop: 20,
-  },
-  text: {
-    fontSize: 20,
-    textAlign: 'center',
-    margin: 10,
   }
 });
