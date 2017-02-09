@@ -14,12 +14,22 @@ export default class ShopCart extends Component {
   constructor (props) {
     super(props)
   }
-  componentWillMount () {
-    headerStore.rightClick = () => {
-      console.log('购物车点击右键')
-    }
+
+  leftClick = () => {
+    let { navigator } = this.props
+    console.log('购物车点击左键')
+    navigator.pop()
   }
+
+  setHeaderStore = () => {
+    headerStore.set('showLeftBtn', true)
+    headerStore.set('showRightBtn', false)
+    headerStore.set('backgroundColor', '#f00')
+    headerStore.leftClick = this.leftClick
+  }
+
   render() {
+    this.setHeaderStore()
     const { navigator } = this.props
     return (
       <View style={styles.root}>

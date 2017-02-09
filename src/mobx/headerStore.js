@@ -2,24 +2,26 @@ import { observable, action } from 'mobx'
 
 const headerStore = observable(
   {
-    title: '默认',
-    showBackBtn: true,
-    showRightBtn: true,
+    show: true,
+    title: '',
+    showLeftBtn: false,
+    showRightBtn: false,
     backgroundColor: '#333238',
-    backText: '返回',
+    backText: '',
     titleColor: '#fff',
-    backTextColor: 'blue',
+    backTextColor: '#fff',
     icon: 'navicon',
     iconColor: '#fff'
   }
 )
 
-headerStore.setTitle = function (title) {
+headerStore.set = function (key, value) {
   setTimeout(() => {
-    this.title = title
+    this[key] = value
   }, 0)
 }
 
+headerStore.leftClick = function () {}
 headerStore.rightClick = function () {}
 
 

@@ -16,82 +16,27 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import { observer } from 'mobx-react/native'
 import headerStore from '../mobx/headerStore'
 
+@observer
 export default class header extends Component {
-  constructor(props) {
-    super(props)
-    // 初始化默认状态
-    this.state = {
-      showBackBtn: true,
-      showRightBtn: true,
-      backgroundColor: '#333238',
-      title: '标题',
-      backText: '返回',
-      titleColor: '#fff',
-      backTextColor: 'blue',
-      icon: 'navicon',
-      iconColor: '#fff'
-    }
-
-    // this.state = Object.assign({}, this.state, this.props)
-    // 读取props的属性
-    for (let attr in props) {
-      this.state[attr] = props[attr]
-    }
-  }
-  /**
-   * 监听返回按钮
-   * @return {[type]} [description]
-   */
-  onBackPress = () => {
-    // console.log('后退事件触发')
-    this.props.onBack && this.props.onBack()
+  onLeftPress = () => {
+    headerStore.leftClick()
   }
 
-  /**
-   * 监听菜单按钮
-   * @return {[type]} [description]
-   */
   onRightPress = () => {
-    // console.log('菜单按钮触发')
-    // this.props.onRight && this.props.onRight()
     headerStore.rightClick()
   }
+
+
   render() {
-    // 获取设备宽度
     var {height, width} = Dimensions.get('window')
     return (
       <View
-        style={[styles.headerBox, {width: width, backgroundColor: this.state.backgroundColor}]}>
-        {
-          (() => {
-            if (this.state.showBackBtn) {
-              return <TouchableOpacity
-                style={styles.headerBack}
-                onPress={this.onBackPress}>
-                <Text style={[styles.BackText, {color: this.state.backTextColor}]}>
-                  <Icon name="angle-left" style={[styles.BackText, {fontSize: 19}]} /> {this.state.backText}</Text>
-                </TouchableOpacity>
-              } else {
-                return <TouchableOpacity style={styles.headerBack} />
-              }
-          })()
-        }
+        style={[styles.headerBox, {width: width, backgroundColor: headerStore.backgroundColor}]}>
+
+        <LeftBtn onPress={this.onLeftPress}/>
         <Title />
-        {/* <Text style={[styles.headerTitle, {color: this.state.titleColor}]}>{headerStore.title}</Text> */}
-        {
-          (() => {
-            if (this.state.showRightBtn) {
-              return <TouchableOpacity style={styles.headerMenu} onPress={this.onRightPress}>
-                <Text style={styles.menuText}>
-                  <Icon name={this.state.icon} style={[styles.menuText, {color: this.state.iconColor}]}/>
-                </Text>
-              </TouchableOpacity>
-            } else {
-              return <TouchableOpacity style={styles.headerMenu} />
-            }
-          })()
-        }
-        <StatusBar barStyle="light-content" />
+        <RightBtn onPress={this.onRightPress}/>
+
       </View>
     );
   }
@@ -101,7 +46,60 @@ export default class header extends Component {
 class Title extends Component {
   render() {
     return (
-      <Text style={[styles.headerTitle]}>{headerStore.title}</Text>
+      <Text style={[styles.headerTitle, {color: headerStore.titleColor}]}>{headerStore.title}</Text>
+    )
+  }
+}
+
+@observer
+class LeftBtn extends Component {
+  constructor (props) {
+    super(props)
+  }
+
+  onPress = () => {
+    this.props.onPress && this.props.onPress()
+  }
+
+  render() {
+    return (
+      headerStore.showLeftBtn ?
+      <TouchableOpacity
+        style={styles.headerBack}
+        onPress={this.onPress}>
+        <Text
+          style={[styles.BackText, {color: headerStore.backTextColor}]}>
+          <Icon
+            name="angle-left"
+            style={[styles.BackText, {fontSize: 19, color: headerStore.backTextColor}]} /> {headerStore.backText}
+        </Text>
+      </TouchableOpacity>
+      :
+      <TouchableOpacity style={styles.headerBack} />
+    )
+  }
+}
+
+@observer
+class RightBtn extends Component {
+  constructor (props) {
+    super(props)
+  }
+
+  onPress = () => {
+    this.props.onPress && this.props.onPress()
+  }
+
+  render() {
+    return (
+      headerStore.showRightBtn ?
+      <TouchableOpacity style={styles.headerMenu} onPress={this.onPress}>
+        <Text style={styles.menuText}>
+          <Icon name={headerStore.icon} style={[styles.menuText, {color: headerStore.iconColor}]}/>
+        </Text>
+      </TouchableOpacity>
+      :
+      <TouchableOpacity style={styles.headerMenu} />
     )
   }
 }
@@ -113,7 +111,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255,255,255,0.9)',
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-end'
+    alignItems: 'flex-end',
   },
   headerBack: {
     flex: 1,

@@ -17,7 +17,7 @@ const INITIAL_ROUTE = {
 
 export default class App extends Component {
   renderScene = (route, navigator) => {
-    headerStore.setTitle(route.title)
+    headerStore.set('title', route.title)
     const Comp = route.component
     return (
       <Comp navigator={navigator} route={route} />
